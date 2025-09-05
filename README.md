@@ -1,5 +1,3 @@
-# INFERNO-task-code
-Code for solving a 2d diffusion-convection of heat in a channel 
 clear;clc; close all;
 
 %% Define Model Variables
@@ -14,7 +12,7 @@ m= 0.891*0.001; %Pas
 k= 0.607; %W/mK
 Cp=4180; %J/kgK
 den=997; %kg/m^3
-dP_dx = -3.6; %pressure difference in channel
+dP_dx = -2; %pressure difference in channel
 
 %% Define Grid Mesh
 dh=1 ;
@@ -70,6 +68,19 @@ A=spdiags(D_plus_ny',ny,A);
 
 T=A\B;
 T=reshape(T,ny,nx);
-figure(1);contourf(T)
-% T_graph=T(:,[1 floor(length(ColdPlate)/2) length(ColdPlate)+3 floor(0.8*nx) nx]);
-% figure(2); plot(T_graph')
+figure(1);contourf(T,"ShowText",true)
+title('Temperature Profile within entire channel')
+xlabel('Length of channel (cm)')
+xticks(floor(nx/10*[0:1:10]))
+xticklabels({'0','3','6','9','12','15','18','21','24','27','30'})
+ylabel('width of channel (cm)')
+yticks(floor(ny/10*[0:1:10]))
+yticklabels({'0','0.3','0.6','0.9','1.2','1.5','1.8','2.1','2.4','2.7','3.0'})
+
+T_graph=T(:,[1 floor(length(ColdPlate)/2) length(ColdPlate)+3 floor(0.8*nx) nx]);
+figure(2); plot(T_graph)
+legend({'entrance','within plates','right after plates','away from plates','end of channel'})
+title('Temperature Profiles at select cross sections')
+xlabel('Cross Section of Sensor Array-nodes in y direction')
+ylabel('Temperature (C)')
+axis([1 ny 10 40])
